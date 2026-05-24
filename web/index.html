@@ -396,6 +396,12 @@
             transition: 180ms ease;
         }
 
+        .topic-card:not(.active) .detail-meta,
+        .topic-card:not(.active) .detail-block,
+        .topic-card:not(.active) .inline-actions {
+            display: none;
+        }
+
         .topic-card > h3 {
             margin-bottom: 10px;
         }
@@ -1066,10 +1072,6 @@ echo "Hello from Cloud FaaS\\n";`,
                 return false;
             }
 
-            if (!items.some((item) => item.id === activeTutorialId)) {
-                activeTutorialId = items[0].id;
-            }
-
             topicList.innerHTML = items.map((item) => `
                 <article class="topic-card ${item.id === activeTutorialId ? "active" : ""}" data-topic-id="${item.id}">
                     <h3>${item.title}</h3>
@@ -1080,7 +1082,7 @@ echo "Hello from Cloud FaaS\\n";`,
 
             topicList.querySelectorAll("[data-topic-id]").forEach((card) => {
                 card.addEventListener("click", () => {
-                    activeTutorialId = card.dataset.topicId;
+                    activeTutorialId = activeTutorialId === card.dataset.topicId ? "" : card.dataset.topicId;
                     renderTopicList();
                 });
             });
